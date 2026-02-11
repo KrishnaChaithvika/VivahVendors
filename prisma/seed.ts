@@ -164,6 +164,292 @@ async function main() {
   await createTerm(csId, "Elopement", "elopement", undefined, 6);
 
   console.log("  Seeded taxonomy terms");
+
+  // ==========================================
+  // SAMPLE VENDOR DATA (for development/testing)
+  // ==========================================
+
+  const bcrypt = await import("bcryptjs");
+  const passwordHash = await bcrypt.hash("password123", 10);
+
+  // Helper to get category and taxonomy term IDs
+  const getCategory = (slug: string) => prisma.category.findUnique({ where: { slug } });
+  const getTerm = (slug: string) => prisma.taxonomyTerm.findUnique({ where: { slug } });
+
+  const sampleVendors = [
+    {
+      user: { name: "Rajesh Kumar", email: "rajesh@example.com" },
+      profile: {
+        businessName: "Rajesh Photography Studio",
+        slug: "rajesh-photography-studio",
+        description: "Award-winning wedding photographer specializing in South Indian and Hindu ceremonies. Over 15 years of experience capturing the beauty of traditional weddings across Tamil Nadu and Kerala.",
+        shortBio: "Capturing timeless moments in traditional ceremonies",
+        country: "IN", state: "Tamil Nadu", city: "Chennai",
+        startingPrice: 50000, currency: "INR",
+        yearsInBusiness: 15, teamSize: 5,
+        averageRating: 4.8, totalReviews: 124,
+        isVerified: true,
+        websiteUrl: "https://rajeshphotography.example.com",
+      },
+      categories: ["photographers"],
+      culturalTags: ["hindu", "south-indian", "tamil", "traditional"],
+      listings: [{
+        title: "Complete Wedding Photography",
+        slug: "rajesh-complete-wedding-photography",
+        description: "Full coverage of your wedding from mehendi to reception. Includes pre-wedding shoot, ceremony coverage, and a premium photo album.",
+        priceType: "STARTING_AT" as const,
+        priceMin: 50000, priceMax: 200000,
+        priceUnit: "per event",
+        isPublished: true, isFeatured: true,
+      }],
+      packages: [
+        { name: "Silver Package", description: "6 hours coverage, 200 edited photos, online gallery", price: 50000, inclusions: ["6 hours coverage", "200 edited photos", "Online gallery", "1 photographer"] },
+        { name: "Gold Package", description: "Full day coverage, 500 edited photos, premium album", price: 120000, inclusions: ["Full day coverage", "500 edited photos", "Premium album", "2 photographers", "Pre-wedding shoot"] },
+        { name: "Platinum Package", description: "Multi-day coverage, unlimited photos, cinematic video", price: 200000, inclusions: ["Multi-day coverage", "Unlimited photos", "Cinematic video", "3 photographers", "Drone shots", "Pre-wedding shoot", "Premium album"] },
+      ],
+    },
+    {
+      user: { name: "Priya Sharma", email: "priya@example.com" },
+      profile: {
+        businessName: "Priya's Bridal Makeup",
+        slug: "priyas-bridal-makeup",
+        description: "Celebrity makeup artist specializing in bridal looks for North Indian and Punjabi weddings. Expert in HD, airbrush, and traditional bridal makeup.",
+        shortBio: "Celebrity bridal makeup artist",
+        country: "IN", state: "Delhi", city: "New Delhi",
+        startingPrice: 25000, currency: "INR",
+        yearsInBusiness: 8, teamSize: 3,
+        averageRating: 4.9, totalReviews: 89,
+        isVerified: true,
+      },
+      categories: ["makeup-artists"],
+      culturalTags: ["hindu", "sikh", "north-indian", "punjabi", "modern"],
+      listings: [{
+        title: "Bridal Makeup & Styling",
+        slug: "priyas-bridal-makeup-styling",
+        description: "Complete bridal look including makeup, hairstyling, and draping. Available for all North Indian wedding ceremonies.",
+        priceType: "RANGE" as const,
+        priceMin: 25000, priceMax: 75000,
+        priceUnit: "per event",
+        isPublished: true, isFeatured: true,
+      }],
+      packages: [
+        { name: "Essential Bridal", description: "HD makeup, hairstyling for one event", price: 25000, inclusions: ["HD makeup", "Hairstyling", "1 event", "Touch-up kit"] },
+        { name: "Premium Bridal", description: "Airbrush makeup, hairstyling, draping for 2 events", price: 50000, inclusions: ["Airbrush makeup", "Hairstyling", "Saree/lehenga draping", "2 events", "Touch-up kit", "Trial session"] },
+      ],
+    },
+    {
+      user: { name: "Mohammed Ali Catering", email: "ali.catering@example.com" },
+      profile: {
+        businessName: "Ali's Royal Catering",
+        slug: "alis-royal-catering",
+        description: "Premium Mughlai and Hyderabadi wedding catering. Specialists in Nikah ceremonies and Walima feasts. Serving authentic biryani, kebabs, and traditional desserts.",
+        shortBio: "Authentic Mughlai wedding feasts",
+        country: "IN", state: "Telangana", city: "Hyderabad",
+        startingPrice: 800, currency: "INR",
+        yearsInBusiness: 20, teamSize: 30,
+        averageRating: 4.7, totalReviews: 203,
+        isVerified: true,
+      },
+      categories: ["caterers"],
+      culturalTags: ["muslim", "south-indian", "telugu", "traditional"],
+      listings: [{
+        title: "Mughlai Wedding Feast",
+        slug: "alis-mughlai-wedding-feast",
+        description: "Complete catering for Nikah and Walima ceremonies. Menu includes Hyderabadi biryani, kebabs, curries, and traditional desserts.",
+        priceType: "STARTING_AT" as const,
+        priceMin: 800, priceMax: 2500,
+        priceUnit: "per plate",
+        isPublished: true, isFeatured: true,
+      }],
+      packages: [
+        { name: "Standard Menu", description: "15-item menu including biryani, 3 curries, starters", price: 800, inclusions: ["Hyderabadi biryani", "3 curries", "4 starters", "2 desserts", "Drinks", "Service staff"] },
+        { name: "Royal Menu", description: "25-item menu with live counters and premium dishes", price: 1500, inclusions: ["2 types of biryani", "5 curries", "8 starters", "Live kebab counter", "4 desserts", "Premium drinks", "Decorated food stalls"] },
+      ],
+    },
+    {
+      user: { name: "Ananya Decorators", email: "ananya@example.com" },
+      profile: {
+        businessName: "Ananya Floral & Decor",
+        slug: "ananya-floral-decor",
+        description: "Luxury wedding decoration specialists. From traditional mandap setups to modern minimalist designs. Expert in South Indian wedding florals and stage decoration.",
+        shortBio: "Luxury wedding florals & mandap decor",
+        country: "IN", state: "Karnataka", city: "Bangalore",
+        startingPrice: 100000, currency: "INR",
+        yearsInBusiness: 12, teamSize: 15,
+        averageRating: 4.6, totalReviews: 67,
+        isVerified: true,
+      },
+      categories: ["decorators", "florists"],
+      culturalTags: ["hindu", "south-indian", "kannada", "traditional", "modern"],
+      listings: [{
+        title: "Complete Wedding Decoration",
+        slug: "ananya-complete-wedding-decoration",
+        description: "End-to-end wedding decoration including mandap, stage, entrance, and table arrangements. Specializing in fresh flower decorations.",
+        priceType: "STARTING_AT" as const,
+        priceMin: 100000, priceMax: 500000,
+        priceUnit: "per event",
+        isPublished: true, isFeatured: false,
+      }],
+      packages: [
+        { name: "Classic Decor", description: "Mandap setup, entrance decor, basic stage", price: 100000, inclusions: ["Mandap decoration", "Entrance arch", "Basic stage setup", "50 chair covers"] },
+        { name: "Premium Decor", description: "Full venue transformation with premium flowers", price: 300000, inclusions: ["Premium mandap", "Full entrance setup", "Luxury stage", "Table centerpieces", "Car decoration", "Photo booth backdrop", "LED lighting"] },
+      ],
+    },
+    {
+      user: { name: "Pandit Ramesh Shastri", email: "pandit.ramesh@example.com" },
+      profile: {
+        businessName: "Pandit Ramesh Shastri",
+        slug: "pandit-ramesh-shastri",
+        description: "Experienced Vedic priest conducting Hindu wedding ceremonies. Specialized in Tamil Brahmin (Iyer) and Telugu wedding rituals. Fluent in Sanskrit, Tamil, and Telugu.",
+        shortBio: "Vedic priest for South Indian weddings",
+        country: "IN", state: "Tamil Nadu", city: "Chennai",
+        startingPrice: 15000, currency: "INR",
+        yearsInBusiness: 25, teamSize: 1,
+        averageRating: 4.9, totalReviews: 312,
+        isVerified: true,
+      },
+      categories: ["priests-officiants"],
+      culturalTags: ["hindu", "south-indian", "tamil", "telugu", "traditional"],
+      listings: [{
+        title: "Hindu Wedding Ceremony",
+        slug: "pandit-ramesh-hindu-wedding",
+        description: "Complete Vedic wedding ceremony including muhurtam selection, all rituals from Ganapathi pooja to Saptapadi. Available for Tamil and Telugu traditions.",
+        priceType: "FIXED" as const,
+        priceMin: 15000,
+        priceUnit: "per ceremony",
+        isPublished: true, isFeatured: true,
+      }],
+      packages: [
+        { name: "Standard Ceremony", description: "Core wedding rituals, 3-4 hours", price: 15000, inclusions: ["Muhurtam consultation", "All wedding rituals", "Pooja materials list", "3-4 hours"] },
+        { name: "Extended Ceremony", description: "Full traditional ceremony with all sub-rituals", price: 25000, inclusions: ["Muhurtam consultation", "All wedding rituals", "All sub-ceremonies", "Homam", "Pooja materials included", "6-8 hours"] },
+      ],
+    },
+    {
+      user: { name: "Sarah Johnson", email: "sarah@example.com" },
+      profile: {
+        businessName: "Sarah Johnson Photography",
+        slug: "sarah-johnson-photography",
+        description: "Destination wedding photographer based in New York. Specialized in interfaith and fusion ceremonies. Editorial style with a documentary approach.",
+        shortBio: "NYC-based destination wedding photographer",
+        country: "US", state: "New York", city: "New York City",
+        startingPrice: 5000, currency: "USD",
+        yearsInBusiness: 10, teamSize: 4,
+        averageRating: 4.7, totalReviews: 56,
+        isVerified: true,
+        websiteUrl: "https://sarahjohnsonphoto.example.com",
+      },
+      categories: ["photographers"],
+      culturalTags: ["interfaith", "fusion", "modern", "destination"],
+      listings: [{
+        title: "Destination Wedding Photography",
+        slug: "sarah-destination-wedding-photography",
+        description: "Full destination wedding coverage. Travel worldwide. Editorial and documentary style capturing every cultural detail of your fusion ceremony.",
+        priceType: "STARTING_AT" as const,
+        priceMin: 5000, priceMax: 15000,
+        currency: "USD",
+        priceUnit: "per event",
+        isPublished: true, isFeatured: true,
+      }],
+      packages: [
+        { name: "Essentials", description: "8 hours coverage, 400 photos", price: 5000, inclusions: ["8 hours coverage", "400 edited photos", "Online gallery", "1 photographer"] },
+        { name: "Premium", description: "Full weekend, 2 photographers, engagement session", price: 10000, inclusions: ["Full weekend coverage", "800+ edited photos", "2 photographers", "Engagement session", "Premium album", "Online gallery"] },
+      ],
+    },
+  ];
+
+  for (const vendor of sampleVendors) {
+    // Create user
+    const user = await prisma.user.upsert({
+      where: { email: vendor.user.email },
+      update: {},
+      create: {
+        name: vendor.user.name,
+        email: vendor.user.email,
+        passwordHash,
+        role: "VENDOR",
+      },
+    });
+
+    // Create vendor profile
+    const profile = await prisma.vendorProfile.upsert({
+      where: { userId: user.id },
+      update: {},
+      create: {
+        userId: user.id,
+        ...vendor.profile,
+        startingPrice: vendor.profile.startingPrice,
+      },
+    });
+
+    // Create listing
+    for (const listingData of vendor.listings) {
+      const listing = await prisma.vendorListing.upsert({
+        where: { slug: listingData.slug },
+        update: {},
+        create: {
+          vendorProfileId: profile.id,
+          ...listingData,
+          currency: (listingData as { currency?: string }).currency ?? "INR",
+        },
+      });
+
+      // Assign categories
+      for (const catSlug of vendor.categories) {
+        const cat = await getCategory(catSlug);
+        if (cat) {
+          await prisma.vendorListingCategory.upsert({
+            where: { listingId_categoryId: { listingId: listing.id, categoryId: cat.id } },
+            update: {},
+            create: { listingId: listing.id, categoryId: cat.id },
+          });
+        }
+      }
+
+      // Assign cultural tags
+      for (const termSlug of vendor.culturalTags) {
+        const term = await getTerm(termSlug);
+        if (term) {
+          await prisma.vendorListingCulturalTag.upsert({
+            where: { listingId_taxonomyTermId: { listingId: listing.id, taxonomyTermId: term.id } },
+            update: {},
+            create: { listingId: listing.id, taxonomyTermId: term.id },
+          });
+        }
+      }
+
+      // Create packages
+      for (let i = 0; i < vendor.packages.length; i++) {
+        const pkg = vendor.packages[i];
+        await prisma.vendorPackage.create({
+          data: {
+            listingId: listing.id,
+            name: pkg.name,
+            description: pkg.description,
+            price: pkg.price,
+            currency: vendor.profile.currency,
+            inclusions: pkg.inclusions,
+            sortOrder: i,
+          },
+        });
+      }
+    }
+  }
+
+  // Create a sample customer
+  await prisma.user.upsert({
+    where: { email: "customer@example.com" },
+    update: {},
+    create: {
+      name: "Test Customer",
+      email: "customer@example.com",
+      passwordHash,
+      role: "CUSTOMER",
+    },
+  });
+
+  console.log(`  Seeded ${sampleVendors.length} sample vendors + 1 customer`);
+  console.log("  Login credentials: any vendor email / password123");
+  console.log("  Customer login: customer@example.com / password123");
   console.log("Seeding complete!");
 }
 
