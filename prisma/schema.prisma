@@ -1,0 +1,554 @@
+generator client {
+  provider        = "prisma-client"
+  output          = "../src/generated/prisma"
+  previewFeatures = ["fullTextSearchPostgres"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ==========================================
+// AUTH & USER MODELS
+// ==========================================
+
+enum UserRole {
+  CUSTOMER
+  VENDOR
+  ADMIN
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  phone         String?   @unique
+  image         String?
+  passwordHash  String?
+  role          UserRole  @default(CUSTOMER)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  accounts      Account[]
+  sessions      Session[]
+  vendorProfile VendorProfile?
+  bookings      Booking[]
+  reviews       Review[]
+  orders        Order[]
+
+  @@index([email])
+  @@index([role])
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ==========================================
+// VENDOR MODELS
+// ==========================================
+
+enum OrderMode {
+  PLATFORM
+  REDIRECT
+  BOTH
+}
+
+model VendorProfile {
+  id              String    @id @default(cuid())
+  userId          String    @unique
+  businessName    String
+  slug            String    @unique
+  description     String?   @db.Text
+  shortBio        String?
+  logoUrl         String?
+  coverImageUrl   String?
+
+  // Contact
+  contactEmail    String?
+  contactPhone    String?
+  websiteUrl      String?
+
+  // Location
+  country         String
+  state           String?
+  city            String
+  addressLine     String?
+  postalCode      String?
+  latitude        Float?
+  longitude       Float?
+
+  // Business details
+  yearsInBusiness Int?
+  teamSize        Int?
+  startingPrice   Decimal?  @db.Decimal(10, 2)
+  currency        String    @default("INR")
+
+  // Order mode
+  orderMode       OrderMode @default(PLATFORM)
+
+  // Computed / cached
+  averageRating   Float     @default(0)
+  totalReviews    Int       @default(0)
+  isVerified      Boolean   @default(false)
+  isClaimed       Boolean   @default(true)
+  isActive        Boolean   @default(true)
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  listings        VendorListing[]
+  sourceLinks     VendorSourceLink[]
+  fieldOverrides  VendorFieldOverride[]
+  claimRequests   VendorClaimRequest[]
+
+  @@index([slug])
+  @@index([country, city])
+  @@index([isActive, isVerified])
+  @@index([isClaimed])
+}
+
+model VendorListing {
+  id                 String   @id @default(cuid())
+  vendorProfileId    String
+  title              String
+  slug               String   @unique
+  description        String   @db.Text
+
+  // Pricing
+  priceType          PriceType @default(STARTING_AT)
+  priceMin           Decimal?  @db.Decimal(10, 2)
+  priceMax           Decimal?  @db.Decimal(10, 2)
+  currency           String    @default("INR")
+  priceUnit          String?
+
+  // External purchase
+  externalPurchaseUrl String?
+
+  // Status
+  isPublished        Boolean  @default(false)
+  isFeatured         Boolean  @default(false)
+
+  // SEO
+  metaTitle          String?
+  metaDescription    String?
+
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  vendorProfile      VendorProfile          @relation(fields: [vendorProfileId], references: [id], onDelete: Cascade)
+  images             VendorListingImage[]
+  categories         VendorListingCategory[]
+  culturalTags       VendorListingCulturalTag[]
+  availability       VendorAvailability[]
+  bookings           Booking[]
+  reviews            Review[]
+  packages           VendorPackage[]
+  orders             Order[]
+
+  @@index([vendorProfileId])
+  @@index([isPublished, isFeatured])
+  @@index([slug])
+}
+
+enum PriceType {
+  FIXED
+  STARTING_AT
+  RANGE
+  ON_REQUEST
+}
+
+model VendorListingImage {
+  id        String  @id @default(cuid())
+  listingId String
+  url       String
+  publicId  String?
+  altText   String?
+  sortOrder Int     @default(0)
+  isPrimary Boolean @default(false)
+
+  listing VendorListing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+
+  @@index([listingId])
+}
+
+// ==========================================
+// CATEGORY SYSTEM (hierarchical)
+// ==========================================
+
+model Category {
+  id          String     @id @default(cuid())
+  name        String
+  slug        String     @unique
+  description String?
+  iconName    String?
+  parentId    String?
+  sortOrder   Int        @default(0)
+  isActive    Boolean    @default(true)
+
+  parent   Category?  @relation("CategoryTree", fields: [parentId], references: [id])
+  children Category[] @relation("CategoryTree")
+  listings VendorListingCategory[]
+
+  @@index([parentId])
+  @@index([slug])
+}
+
+model VendorListingCategory {
+  listingId  String
+  categoryId String
+
+  listing  VendorListing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  category Category      @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@id([listingId, categoryId])
+}
+
+// ==========================================
+// CULTURAL TAXONOMY SYSTEM
+// ==========================================
+
+model TaxonomyType {
+  id          String  @id @default(cuid())
+  name        String  @unique
+  displayName String
+  description String?
+  sortOrder   Int     @default(0)
+  isActive    Boolean @default(true)
+
+  terms TaxonomyTerm[]
+
+  @@index([name])
+}
+
+model TaxonomyTerm {
+  id             String  @id @default(cuid())
+  taxonomyTypeId String
+  name           String
+  slug           String  @unique
+  description    String?
+  parentId       String?
+  sortOrder      Int     @default(0)
+  isActive       Boolean @default(true)
+  metadata       Json?
+
+  taxonomyType TaxonomyType  @relation(fields: [taxonomyTypeId], references: [id])
+  parent       TaxonomyTerm? @relation("TermHierarchy", fields: [parentId], references: [id])
+  children     TaxonomyTerm[] @relation("TermHierarchy")
+  listings     VendorListingCulturalTag[]
+
+  @@unique([taxonomyTypeId, slug])
+  @@index([taxonomyTypeId])
+  @@index([parentId])
+}
+
+model VendorListingCulturalTag {
+  listingId      String
+  taxonomyTermId String
+
+  listing      VendorListing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  taxonomyTerm TaxonomyTerm  @relation(fields: [taxonomyTermId], references: [id], onDelete: Cascade)
+
+  @@id([listingId, taxonomyTermId])
+}
+
+// ==========================================
+// BOOKING SYSTEM
+// ==========================================
+
+enum BookingStatus {
+  INQUIRY
+  QUOTE_SENT
+  ACCEPTED
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+  DECLINED
+}
+
+model Booking {
+  id           String        @id @default(cuid())
+  customerId   String
+  listingId    String
+
+  // Event details
+  eventDate    DateTime
+  eventEndDate DateTime?
+  eventType    String?
+  guestCount   Int?
+
+  // Venue / location
+  eventCity    String?
+  eventVenue   String?
+
+  // Pricing
+  quotedPrice  Decimal?      @db.Decimal(10, 2)
+  currency     String        @default("INR")
+
+  // Status
+  status       BookingStatus @default(INQUIRY)
+
+  // Messages
+  customerNote String?       @db.Text
+  vendorNote   String?       @db.Text
+
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  customer User          @relation(fields: [customerId], references: [id])
+  listing  VendorListing @relation(fields: [listingId], references: [id])
+  review   Review?
+
+  @@index([customerId])
+  @@index([listingId])
+  @@index([status])
+  @@index([eventDate])
+}
+
+// ==========================================
+// REVIEWS & RATINGS
+// ==========================================
+
+model Review {
+  id         String  @id @default(cuid())
+  customerId String
+  listingId  String
+  bookingId  String? @unique
+  orderId    String? @unique
+
+  rating     Int
+  title      String?
+  content    String  @db.Text
+
+  isApproved Boolean @default(true)
+  isVerified Boolean @default(false)
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  customer User          @relation(fields: [customerId], references: [id])
+  listing  VendorListing @relation(fields: [listingId], references: [id])
+  booking  Booking?      @relation(fields: [bookingId], references: [id])
+  order    Order?        @relation(fields: [orderId], references: [id])
+
+  @@index([listingId])
+  @@index([customerId])
+  @@index([rating])
+}
+
+// ==========================================
+// VENDOR AVAILABILITY
+// ==========================================
+
+model VendorAvailability {
+  id          String   @id @default(cuid())
+  listingId   String
+  date        DateTime @db.Date
+  isAvailable Boolean  @default(true)
+
+  listing VendorListing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+
+  @@unique([listingId, date])
+  @@index([listingId, date])
+}
+
+// ==========================================
+// PACKAGES & ORDERS
+// ==========================================
+
+model VendorPackage {
+  id           String   @id @default(cuid())
+  listingId    String
+  name         String
+  description  String?  @db.Text
+  price        Decimal  @db.Decimal(10, 2)
+  currency     String   @default("INR")
+  inclusions   Json?
+  duration     String?
+  maxGuestCount Int?
+  isActive     Boolean  @default(true)
+  sortOrder    Int      @default(0)
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  listing VendorListing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  orders  Order[]
+
+  @@index([listingId])
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  REFUNDED
+  FAILED
+}
+
+enum PaymentProvider {
+  STRIPE
+  RAZORPAY
+}
+
+enum OrderType {
+  PLATFORM
+  REDIRECT
+}
+
+model Order {
+  id              String         @id @default(cuid())
+  customerId      String
+  packageId       String?
+  listingId       String
+
+  // Event details
+  eventDate       DateTime?
+
+  // Pricing
+  totalAmount     Decimal        @db.Decimal(10, 2)
+  currency        String         @default("INR")
+
+  // Payment
+  paymentStatus   PaymentStatus  @default(PENDING)
+  paymentProvider PaymentProvider?
+  paymentIntentId String?
+
+  // Order type
+  orderType       OrderType      @default(PLATFORM)
+
+  // Notes
+  customerNote    String?        @db.Text
+
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  customer User           @relation(fields: [customerId], references: [id])
+  package  VendorPackage?  @relation(fields: [packageId], references: [id])
+  listing  VendorListing  @relation(fields: [listingId], references: [id])
+  items    OrderItem[]
+  review   Review?
+
+  @@index([customerId])
+  @@index([listingId])
+  @@index([paymentStatus])
+}
+
+model OrderItem {
+  id          String  @id @default(cuid())
+  orderId     String
+  description String
+  quantity    Int     @default(1)
+  unitPrice   Decimal @db.Decimal(10, 2)
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+}
+
+// ==========================================
+// CRAWLER MODELS
+// ==========================================
+
+model VendorSourceLink {
+  id              String   @id @default(cuid())
+  vendorProfileId String
+  sourceType      String
+  sourceUrl       String
+  externalId      String?
+  lastScrapedAt   DateTime?
+
+  createdAt       DateTime @default(now())
+
+  vendorProfile VendorProfile @relation(fields: [vendorProfileId], references: [id], onDelete: Cascade)
+
+  @@unique([sourceType, externalId])
+  @@index([vendorProfileId])
+}
+
+model VendorFieldOverride {
+  id              String   @id @default(cuid())
+  vendorProfileId String
+  fieldName       String
+  overriddenAt    DateTime @default(now())
+
+  vendorProfile VendorProfile @relation(fields: [vendorProfileId], references: [id], onDelete: Cascade)
+
+  @@unique([vendorProfileId, fieldName])
+  @@index([vendorProfileId])
+}
+
+enum ClaimStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model VendorClaimRequest {
+  id                 String      @id @default(cuid())
+  vendorProfileId    String
+  claimantUserId     String
+  status             ClaimStatus @default(PENDING)
+  verificationMethod String?
+  verificationData   Json?
+  notes              String?     @db.Text
+
+  createdAt          DateTime    @default(now())
+  updatedAt          DateTime    @updatedAt
+
+  vendorProfile VendorProfile @relation(fields: [vendorProfileId], references: [id], onDelete: Cascade)
+
+  @@index([vendorProfileId])
+  @@index([status])
+}
+
+model CrawlRun {
+  id              String   @id @default(cuid())
+  source          String
+  status          String   @default("running")
+  vendorsFound    Int      @default(0)
+  vendorsCreated  Int      @default(0)
+  vendorsUpdated  Int      @default(0)
+  errors          Int      @default(0)
+  errorLog        Json?
+
+  startedAt       DateTime @default(now())
+  completedAt     DateTime?
+
+  @@index([source])
+  @@index([startedAt])
+}
