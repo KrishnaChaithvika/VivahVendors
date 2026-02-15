@@ -38,6 +38,9 @@ export default async function DashboardLayout({
                   <Link href="/dashboard/vendor/bookings" className="text-sm font-medium text-muted-foreground hover:text-foreground">
                     Bookings
                   </Link>
+                  <Link href="/dashboard/vendor/orders" className="text-sm font-medium text-muted-foreground hover:text-foreground">
+                    Orders
+                  </Link>
                   <Link href="/dashboard/vendor/reviews" className="text-sm font-medium text-muted-foreground hover:text-foreground">
                     Reviews
                   </Link>
@@ -49,6 +52,9 @@ export default async function DashboardLayout({
                   </Link>
                   <Link href="/dashboard/customer/bookings" className="text-sm font-medium text-muted-foreground hover:text-foreground">
                     My Bookings
+                  </Link>
+                  <Link href="/dashboard/customer/orders" className="text-sm font-medium text-muted-foreground hover:text-foreground">
+                    My Orders
                   </Link>
                   <Link href="/dashboard/customer/reviews" className="text-sm font-medium text-muted-foreground hover:text-foreground">
                     My Reviews
