@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getVendorBySlug } from "@/services/vendor.service";
 import { Star, MapPin, Clock, Users, Globe, Check } from "lucide-react";
+import { BookingRequestForm } from "@/components/booking/booking-request-form";
 import type { Metadata } from "next";
 
 interface PageProps {
@@ -246,7 +247,9 @@ export default async function VendorDetailPage({ params }: PageProps) {
                       )}
                     </>
                   )}
-                  <Button className="w-full mt-4">Request Quote</Button>
+                  <div className="mt-4">
+                    <BookingRequestForm listingId={listing.id} listingTitle={listing.title} />
+                  </div>
                 </CardContent>
               </Card>
 
