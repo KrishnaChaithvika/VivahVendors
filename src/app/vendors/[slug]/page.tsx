@@ -23,9 +23,24 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const listing = await getVendorBySlug(slug);
   if (!listing) return { title: "Vendor Not Found" };
 
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://vivahvendors.com";
+  const profile = listing.vendorProfile;
+
   return {
-    title: listing.vendorProfile.businessName,
+    title: profile.businessName,
     description: listing.description.slice(0, 160),
+    openGraph: {
+      title: `${profile.businessName} | VivahVendors`,
+      description: listing.description.slice(0, 160),
+      url: `${baseUrl}/vendors/${listing.slug}`,
+      siteName: "VivahVendors",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: profile.businessName,
+      description: listing.description.slice(0, 160),
+    },
   };
 }
 
@@ -49,6 +64,29 @@ export default async function VendorDetailPage({ params }: PageProps) {
     (t) => t.taxonomyTerm.taxonomyType.name === "ceremony_style"
   );
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    name: profile.businessName,
+    description: listing.description,
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: profile.city,
+      addressRegion: profile.state,
+      addressCountry: profile.country,
+    },
+    ...(profile.contactPhone && { telephone: profile.contactPhone }),
+    ...(profile.contactEmail && { email: profile.contactEmail }),
+    ...(profile.websiteUrl && { url: profile.websiteUrl }),
+    ...(profile.averageRating > 0 && {
+      aggregateRating: {
+        "@type": "AggregateRating",
+        ratingValue: profile.averageRating,
+        reviewCount: profile.totalReviews,
+      },
+    }),
+  };
+
   function formatPrice(amount: number | null, currency: string) {
     if (amount === null) return "N/A";
     return new Intl.NumberFormat(currency === "INR" ? "en-IN" : "en-US", {
@@ -60,6 +98,10 @@ export default async function VendorDetailPage({ params }: PageProps) {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Header />
 
       <main className="flex-1">
