@@ -10,6 +10,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getVendorBySlug } from "@/services/vendor.service";
 import { Star, MapPin, Clock, Users, Globe, Check } from "lucide-react";
 import { BookingRequestForm } from "@/components/booking/booking-request-form";
+import { ClaimButton } from "@/components/vendor/claim-button";
+import { auth } from "@/lib/auth";
 import type { Metadata } from "next";
 
 interface PageProps {
@@ -29,7 +31,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function VendorDetailPage({ params }: PageProps) {
   const { slug } = await params;
-  const listing = await getVendorBySlug(slug);
+  const [listing, session] = await Promise.all([
+    getVendorBySlug(slug),
+    auth(),
+  ]);
 
   if (!listing) notFound();
 
@@ -267,6 +272,20 @@ export default async function VendorDetailPage({ params }: PageProps) {
                   )}
                 </CardContent>
               </Card>
+
+              {!profile.isClaimed && (
+                <Card>
+                  <CardContent className="pt-6">
+                    <p className="text-sm text-muted-foreground mb-3">
+                      Is this your business? Claim it to manage your profile.
+                    </p>
+                    <ClaimButton
+                      vendorProfileId={profile.id}
+                      isLoggedIn={!!session?.user}
+                    />
+                  </CardContent>
+                </Card>
+              )}
             </div>
           </div>
         </div>
