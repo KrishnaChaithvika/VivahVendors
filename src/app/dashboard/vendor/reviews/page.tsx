@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/db";
 import { Card, CardContent } from "@/components/ui/card";
 import { Star } from "lucide-react";
+import { formatDate } from "@/lib/utils";
 
 export default async function VendorReviewsPage() {
   const session = await auth();
@@ -82,7 +83,7 @@ export default async function VendorReviewsPage() {
                 )}
                 <p className="text-sm text-muted-foreground">{review.content}</p>
                 <p className="text-xs text-muted-foreground mt-2">
-                  {review.createdAt.toLocaleDateString()}
+                  {formatDate(review.createdAt)}
                 </p>
               </CardContent>
             </Card>

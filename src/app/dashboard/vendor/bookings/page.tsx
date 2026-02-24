@@ -4,6 +4,7 @@ import { prisma } from "@/lib/db";
 import { Card, CardContent } from "@/components/ui/card";
 import { BookingStatusActions } from "@/components/booking/booking-status-actions";
 import { SendQuoteForm } from "@/components/booking/send-quote-form";
+import { formatDate } from "@/lib/utils";
 
 const STATUS_COLORS: Record<string, string> = {
   INQUIRY: "bg-blue-100 text-blue-800",
@@ -60,7 +61,7 @@ export default async function VendorBookingsPage() {
                       Customer: {booking.customer.name ?? booking.customer.email}
                     </p>
                     <p className="text-sm text-muted-foreground">
-                      Event: {booking.eventDate.toLocaleDateString()}
+                      Event: {formatDate(booking.eventDate)}
                       {booking.eventType && ` · ${booking.eventType}`}
                       {booking.guestCount && ` · ${booking.guestCount} guests`}
                       {booking.eventCity && ` · ${booking.eventCity}`}

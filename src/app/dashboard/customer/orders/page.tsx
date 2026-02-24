@@ -4,6 +4,7 @@ import { prisma } from "@/lib/db";
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { formatDate } from "@/lib/utils";
 
 const PAYMENT_STATUS_COLORS: Record<string, string> = {
   PENDING: "bg-yellow-100 text-yellow-800",
@@ -67,11 +68,11 @@ export default async function CustomerOrdersPage() {
                     </p>
                     {order.eventDate && (
                       <p className="text-xs text-muted-foreground mt-1">
-                        Event: {order.eventDate.toLocaleDateString()}
+                        Event: {formatDate(order.eventDate)}
                       </p>
                     )}
                     <p className="text-xs text-muted-foreground">
-                      Ordered: {order.createdAt.toLocaleDateString()}
+                      Ordered: {formatDate(order.createdAt)}
                     </p>
                   </div>
                 </div>
