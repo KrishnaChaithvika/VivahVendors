@@ -8,6 +8,7 @@ import Credentials from "next-auth/providers/credentials";
  * Used by middleware for session checks.
  */
 export const authConfig = {
+  secret: process.env.AUTH_SECRET,
   pages: {
     signIn: "/login",
   },
