@@ -83,7 +83,7 @@ export default async function VendorsPage({ searchParams }: PageProps) {
     <div className="min-h-screen flex flex-col">
       <Header />
 
-      <main className="flex-1">
+      <main id="main-content" className="flex-1">
         <div className="container mx-auto px-4 py-8">
           <h1 className="text-3xl font-bold mb-6">
             {filters.category
@@ -209,7 +209,7 @@ export default async function VendorsPage({ searchParams }: PageProps) {
                 {results.items.map((listing) => (
                   <VendorCard
                     key={listing.id}
-                    listing={listing as unknown as Parameters<typeof VendorCard>[0]["listing"]}
+                    listing={listing}
                   />
                 ))}
               </div>
