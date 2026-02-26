@@ -38,7 +38,7 @@ export function BookingRequestForm({ listingId, listingTitle }: BookingRequestFo
 
   if (success) {
     return (
-      <div className="rounded-md bg-green-50 border border-green-200 px-4 py-3 text-sm text-green-800">
+      <div role="status" className="rounded-md bg-green-50 border border-green-200 px-4 py-3 text-sm text-green-800">
         Booking request sent! The vendor will get back to you soon.
       </div>
     );
@@ -59,7 +59,7 @@ export function BookingRequestForm({ listingId, listingTitle }: BookingRequestFo
       <h3 className="font-semibold">Request Quote — {listingTitle}</h3>
 
       {error && (
-        <div className="rounded-md bg-destructive/10 border border-destructive/20 px-4 py-3 text-sm text-destructive">
+        <div role="alert" className="rounded-md bg-destructive/10 border border-destructive/20 px-4 py-3 text-sm text-destructive">
           {error}
         </div>
       )}

@@ -73,7 +73,7 @@ export function ClaimButton({ vendorProfileId, isLoggedIn }: ClaimButtonProps) {
       </p>
 
       {error && (
-        <p className="text-xs text-destructive">{error}</p>
+        <p role="alert" className="text-xs text-destructive">{error}</p>
       )}
 
       <div className="space-y-2">

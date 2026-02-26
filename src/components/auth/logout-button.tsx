@@ -11,6 +11,7 @@ export function LogOutButton() {
       size="sm"
       className="gap-2"
       onClick={() => signOut({ callbackUrl: "/" })}
+      aria-label="Sign out"
     >
       <LogOut className="h-4 w-4" />
       <span className="hidden md:inline">Sign out</span>

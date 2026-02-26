@@ -50,7 +50,7 @@ export function SendQuoteForm({ bookingId, currency }: SendQuoteFormProps) {
       <input type="hidden" name="currency" value={currency} />
 
       {error && (
-        <p className="text-xs text-destructive">{error}</p>
+        <p role="alert" className="text-xs text-destructive">{error}</p>
       )}
 
       <div className="space-y-1">

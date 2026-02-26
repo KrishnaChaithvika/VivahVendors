@@ -42,7 +42,7 @@ export function ReviewForm({ listingId, bookingId }: ReviewFormProps) {
 
   if (success) {
     return (
-      <div className="rounded-md bg-green-50 border border-green-200 px-4 py-3 text-sm text-green-800">
+      <div role="status" className="rounded-md bg-green-50 border border-green-200 px-4 py-3 text-sm text-green-800">
         Thank you for your review!
       </div>
     );
@@ -55,14 +55,14 @@ export function ReviewForm({ listingId, bookingId }: ReviewFormProps) {
       <input type="hidden" name="rating" value={rating} />
 
       {error && (
-        <div className="rounded-md bg-destructive/10 border border-destructive/20 px-4 py-3 text-sm text-destructive">
+        <div role="alert" className="rounded-md bg-destructive/10 border border-destructive/20 px-4 py-3 text-sm text-destructive">
           {error}
         </div>
       )}
 
       <div className="space-y-2">
         <Label>Rating *</Label>
-        <div className="flex gap-1">
+        <div className="flex gap-1" role="radiogroup" aria-label="Rating">
           {[1, 2, 3, 4, 5].map((value) => (
             <button
               key={value}
@@ -70,9 +70,14 @@ export function ReviewForm({ listingId, bookingId }: ReviewFormProps) {
               onClick={() => setRating(value)}
               onMouseEnter={() => setHoverRating(value)}
               onMouseLeave={() => setHoverRating(0)}
-              className="p-0.5"
+              onFocus={() => setHoverRating(value)}
+              onBlur={() => setHoverRating(0)}
+              aria-label={`Rate ${value} star${value !== 1 ? "s" : ""}`}
+              aria-pressed={rating === value}
+              className="p-0.5 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               <Star
+                aria-hidden="true"
                 className={`h-6 w-6 transition-colors ${
                   value <= (hoverRating || rating)
                     ? "fill-yellow-400 text-yellow-400"

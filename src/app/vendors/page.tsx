@@ -112,7 +112,7 @@ export default async function VendorsPage({ searchParams }: PageProps) {
     <div className="min-h-screen flex flex-col">
       <Header />
 
-      <main className="flex-1">
+      <main id="main-content" className="flex-1">
         {/* Search header */}
         <div className="bg-gradient-to-r from-rose-50 via-orange-50 to-amber-50 border-b py-6">
           <div className="container mx-auto px-4">
@@ -123,7 +123,7 @@ export default async function VendorsPage({ searchParams }: PageProps) {
             </h1>
             <form method="GET" action="/vendors" className="flex gap-2 max-w-xl">
               <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" aria-hidden="true" />
                 <input
                   name="query"
                   defaultValue={filters.query}
@@ -299,7 +299,7 @@ export default async function VendorsPage({ searchParams }: PageProps) {
                 {results.items.map((listing) => (
                   <VendorCard
                     key={listing.id}
-                    listing={listing as unknown as Parameters<typeof VendorCard>[0]["listing"]}
+                    listing={listing}
                   />
                 ))}
               </div>

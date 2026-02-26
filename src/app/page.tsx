@@ -9,16 +9,16 @@ import { getFeaturedVendors, getCategories } from "@/services/vendor.service";
 import { Camera, UtensilsCrossed, Palette, Building, Sparkles, Music, BookOpen, Flower, Video, ClipboardList, Search } from "lucide-react";
 
 const CATEGORY_ICONS: Record<string, React.ReactNode> = {
-  photographers: <Camera className="h-6 w-6" />,
-  caterers: <UtensilsCrossed className="h-6 w-6" />,
-  decorators: <Palette className="h-6 w-6" />,
-  venues: <Building className="h-6 w-6" />,
-  "makeup-artists": <Sparkles className="h-6 w-6" />,
-  "djs-music": <Music className="h-6 w-6" />,
-  "priests-officiants": <BookOpen className="h-6 w-6" />,
-  florists: <Flower className="h-6 w-6" />,
-  videographers: <Video className="h-6 w-6" />,
-  "wedding-planners": <ClipboardList className="h-6 w-6" />,
+  photographers: <Camera className="h-6 w-6" aria-hidden="true" />,
+  caterers: <UtensilsCrossed className="h-6 w-6" aria-hidden="true" />,
+  decorators: <Palette className="h-6 w-6" aria-hidden="true" />,
+  venues: <Building className="h-6 w-6" aria-hidden="true" />,
+  "makeup-artists": <Sparkles className="h-6 w-6" aria-hidden="true" />,
+  "djs-music": <Music className="h-6 w-6" aria-hidden="true" />,
+  "priests-officiants": <BookOpen className="h-6 w-6" aria-hidden="true" />,
+  florists: <Flower className="h-6 w-6" aria-hidden="true" />,
+  videographers: <Video className="h-6 w-6" aria-hidden="true" />,
+  "wedding-planners": <ClipboardList className="h-6 w-6" aria-hidden="true" />,
 };
 
 const CATEGORY_COLORS: Record<string, { bg: string; icon: string }> = {
@@ -44,7 +44,7 @@ export default async function HomePage() {
     <div className="min-h-screen flex flex-col">
       <Header />
 
-      <main className="flex-1">
+      <main id="main-content" className="flex-1">
         {/* Hero Section */}
         <section className="relative overflow-hidden bg-gradient-to-br from-rose-50 via-orange-50 to-amber-50 py-20 md:py-32">
           {/* Decorative floating elements */}
@@ -76,7 +76,7 @@ export default async function HomePage() {
             <div className="flex flex-col sm:flex-row gap-3 justify-center max-w-lg mx-auto">
               <Link href="/vendors" className="flex-1">
                 <Button size="lg" className="w-full gap-2">
-                  <Search className="h-4 w-4" />
+                  <Search className="h-4 w-4" aria-hidden="true" />
                   Browse Vendors
                 </Button>
               </Link>
@@ -168,7 +168,7 @@ export default async function HomePage() {
                 {featuredVendors.map((listing) => (
                   <VendorCard
                     key={listing.id}
-                    listing={listing as unknown as Parameters<typeof VendorCard>[0]["listing"]}
+                    listing={listing}
                   />
                 ))}
               </div>
