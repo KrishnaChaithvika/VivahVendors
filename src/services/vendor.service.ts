@@ -26,6 +26,17 @@ const vendorInclude = {
   _count: { select: { reviews: true, bookings: true } },
 } satisfies Prisma.VendorListingInclude;
 
+// Maps common country names/aliases to ISO-3166-1 alpha-2 codes stored in the DB.
+const COUNTRY_NAME_TO_CODE: Record<string, string> = {
+  india: "IN", "india ": "IN", bharat: "IN",
+  "united states": "US", usa: "US", "u.s.a": "US", america: "US",
+  "united kingdom": "GB", uk: "GB", britain: "GB", england: "GB",
+  canada: "CA", australia: "AU", singapore: "SG", malaysia: "MY",
+  uae: "AE", dubai: "AE", "united arab emirates": "AE",
+  nepal: "NP", pakistan: "PK", "sri lanka": "LK",
+  bangladesh: "BD", germany: "DE", france: "FR",
+};
+
 export async function searchVendors(filters: VendorSearchFilters) {
   const limit = filters.limit ?? 12;
   const where: Prisma.VendorListingWhereInput = {
@@ -34,10 +45,17 @@ export async function searchVendors(filters: VendorSearchFilters) {
   };
 
   if (filters.query) {
+    const q = filters.query.trim();
+    const countryCode = COUNTRY_NAME_TO_CODE[q.toLowerCase()];
     where.OR = [
-      { title: { contains: filters.query, mode: "insensitive" } },
-      { description: { contains: filters.query, mode: "insensitive" } },
-      { vendorProfile: { businessName: { contains: filters.query, mode: "insensitive" } } },
+      { title: { contains: q, mode: "insensitive" } },
+      { description: { contains: q, mode: "insensitive" } },
+      { vendorProfile: { businessName: { contains: q, mode: "insensitive" } } },
+      // Search location fields so "mumbai", "chennai", "india" all work
+      { vendorProfile: { city: { contains: q, mode: "insensitive" } } },
+      { vendorProfile: { state: { contains: q, mode: "insensitive" } } },
+      // Resolve country name → ISO code, e.g. "india" → "IN"
+      ...(countryCode ? [{ vendorProfile: { country: countryCode } }] : []),
     ];
   }
 
@@ -46,9 +64,12 @@ export async function searchVendors(filters: VendorSearchFilters) {
   }
 
   if (filters.country) {
+    // Accept either ISO code ("IN") or full name ("India")
+    const resolvedCode =
+      COUNTRY_NAME_TO_CODE[filters.country.toLowerCase()] ?? filters.country.toUpperCase();
     where.vendorProfile = {
       ...(where.vendorProfile as Prisma.VendorProfileWhereInput),
-      country: filters.country,
+      country: resolvedCode,
     };
   }
 
