@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { BookingStatusActions } from "@/components/booking/booking-status-actions";
+import { formatDate } from "@/lib/utils";
 
 const STATUS_COLORS: Record<string, string> = {
   INQUIRY: "bg-blue-100 text-blue-800",
@@ -60,7 +61,7 @@ export default async function CustomerBookingsPage() {
                       {booking.listing.vendorProfile.businessName}
                     </p>
                     <p className="text-sm text-muted-foreground">
-                      Event: {booking.eventDate.toLocaleDateString()}
+                      Event: {formatDate(booking.eventDate)}
                       {booking.eventType && ` · ${booking.eventType}`}
                       {booking.guestCount && ` · ${booking.guestCount} guests`}
                     </p>
