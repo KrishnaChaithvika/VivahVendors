@@ -42,30 +42,43 @@ const VENDOR_ACTIONS: Record<string, { label: string; status: string; variant: "
 export function BookingStatusActions({ bookingId, status, role }: BookingStatusActionsProps) {
   const router = useRouter();
   const [loading, setLoading] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const actions = role === "customer" ? CUSTOMER_ACTIONS[status] : VENDOR_ACTIONS[status];
   if (!actions || actions.length === 0) return null;
 
   async function handleAction(newStatus: string) {
     setLoading(newStatus);
-    await updateBookingStatus(bookingId, newStatus);
-    router.refresh();
-    setLoading(null);
+    setError(null);
+    try {
+      const result = await updateBookingStatus(bookingId, newStatus);
+      if (result && !result.success) {
+        setError(result.error ?? "Action failed");
+      }
+      router.refresh();
+    } catch {
+      setError("An unexpected error occurred");
+    } finally {
+      setLoading(null);
+    }
   }
 
   return (
-    <div className="flex gap-2">
-      {actions.map((action) => (
-        <Button
-          key={action.status}
-          variant={action.variant}
-          size="sm"
-          onClick={() => handleAction(action.status)}
-          disabled={loading !== null}
-        >
-          {loading === action.status ? "..." : action.label}
-        </Button>
-      ))}
+    <div className="flex flex-col gap-2">
+      <div className="flex gap-2">
+        {actions.map((action) => (
+          <Button
+            key={action.status}
+            variant={action.variant}
+            size="sm"
+            onClick={() => handleAction(action.status)}
+            disabled={loading !== null}
+          >
+            {loading === action.status ? "..." : action.label}
+          </Button>
+        ))}
+      </div>
+      {error && <p role="alert" className="text-xs text-destructive">{error}</p>}
     </div>
   );
 }
