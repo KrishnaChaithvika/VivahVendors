@@ -435,6 +435,541 @@ async function main() {
     }
   }
 
+  // ==========================================
+  // MUMBAI VENDORS — Showcase diverse wedding market
+  // ==========================================
+
+  const mumbaiVendors = [
+    // --- PHOTOGRAPHERS ---
+    {
+      user: { name: "Vikram Patil", email: "vikram.patil@example.com" },
+      profile: {
+        businessName: "Vikram Patil Photography",
+        slug: "vikram-patil-photography-mumbai",
+        description: "Award-winning Maharashtrian wedding photographer based in Andheri, Mumbai. Specializing in capturing the vibrant traditions of Marathi, Gujarati, and Hindu weddings with a cinematic style.",
+        shortBio: "Capturing Maharashtrian wedding traditions since 2010",
+        country: "IN", state: "Maharashtra", city: "Mumbai",
+        startingPrice: 75000, currency: "INR",
+        yearsInBusiness: 14, teamSize: 8,
+        averageRating: 4.8, totalReviews: 187,
+        isVerified: true,
+        websiteUrl: "https://vikrampatilphoto.example.com",
+      },
+      categories: ["photographers"],
+      culturalTags: ["hindu", "west-indian", "marathi", "traditional"],
+      listings: [{
+        title: "Complete Maharashtrian Wedding Photography",
+        slug: "vikram-complete-maharashtrian-wedding-photography",
+        description: "Full coverage of traditional Maharashtrian weddings including Sakhar Puda, Haldi, Mehndi, and the main ceremony. Pre-wedding shoots available.",
+        priceType: "STARTING_AT" as const,
+        priceMin: 75000, priceMax: 300000,
+        priceUnit: "per event",
+        isPublished: true, isFeatured: true,
+      }],
+      packages: [
+        { name: "Essential", description: "Single day coverage, 300 edited photos", price: 75000, inclusions: ["8 hours coverage", "300 edited photos", "Online gallery", "1 photographer"] },
+        { name: "Premium", description: "Full wedding coverage with pre-wedding shoot", price: 150000, inclusions: ["Full day coverage", "600 edited photos", "2 photographers", "Pre-wedding shoot", "Premium album"] },
+        { name: "Luxury", description: "Multi-day + cinematic video + drone", price: 300000, inclusions: ["Multi-day coverage", "Unlimited photos", "Cinematic highlight video", "Drone coverage", "3 photographers", "Premium album"] },
+      ],
+    },
+    {
+      user: { name: "Faizan Sheikh", email: "faizan.sheikh@example.com" },
+      profile: {
+        businessName: "Faizan Sheikh Photography",
+        slug: "faizan-sheikh-photography-mumbai",
+        description: "Specialist in Muslim wedding photography covering Nikah, Mehndi, and Walima ceremonies. Based in Bandra, Mumbai with 10+ years capturing the elegance of Islamic wedding traditions.",
+        shortBio: "Elegant Nikah and Walima photography",
+        country: "IN", state: "Maharashtra", city: "Mumbai",
+        startingPrice: 60000, currency: "INR",
+        yearsInBusiness: 10, teamSize: 5,
+        averageRating: 4.7, totalReviews: 132,
+        isVerified: true,
+      },
+      categories: ["photographers"],
+      culturalTags: ["muslim", "west-indian", "traditional", "modern"],
+      listings: [{
+        title: "Muslim Wedding Photography",
+        slug: "faizan-muslim-wedding-photography-mumbai",
+        description: "Complete photography coverage for Nikah, Mehndi, and Walima events. Respectful of Islamic traditions with a modern editorial approach.",
+        priceType: "STARTING_AT" as const,
+        priceMin: 60000, priceMax: 250000,
+        priceUnit: "per event",
+        isPublished: true, isFeatured: false,
+      }],
+      packages: [
+        { name: "Nikah Coverage", description: "Ceremony day coverage", price: 60000, inclusions: ["6 hours coverage", "250 edited photos", "1 photographer", "Online gallery"] },
+        { name: "Complete Wedding", description: "Mehndi + Nikah + Walima coverage", price: 150000, inclusions: ["Multi-event coverage", "500+ edited photos", "2 photographers", "All 3 events", "Premium album"] },
+      ],
+    },
+    {
+      user: { name: "Neha Kapoor", email: "neha.kapoor@example.com" },
+      profile: {
+        businessName: "Neha Kapoor Studios",
+        slug: "neha-kapoor-studios-mumbai",
+        description: "Modern fusion wedding photographer in South Mumbai. Specializing in intimate weddings, interfaith ceremonies, and destination celebrations with a candid documentary style.",
+        shortBio: "Candid fusion & destination weddings",
+        country: "IN", state: "Maharashtra", city: "Mumbai",
+        startingPrice: 100000, currency: "INR",
+        yearsInBusiness: 7, teamSize: 4,
+        averageRating: 4.9, totalReviews: 94,
+        isVerified: true,
+        websiteUrl: "https://nehakapoorphoto.example.com",
+      },
+      categories: ["photographers", "videographers"],
+      culturalTags: ["interfaith", "modern", "fusion", "destination"],
+      listings: [{
+        title: "Fusion Wedding Photo & Film",
+        slug: "neha-fusion-wedding-photo-film-mumbai",
+        description: "Cinematic photography and film for modern, interfaith, and fusion weddings. Travel across India and internationally.",
+        priceType: "STARTING_AT" as const,
+        priceMin: 100000, priceMax: 500000,
+        priceUnit: "per event",
+        isPublished: true, isFeatured: true,
+      }],
+      packages: [
+        { name: "Photo Only", description: "Full day candid photography", price: 100000, inclusions: ["Full day coverage", "400 edited photos", "2 photographers", "Online gallery"] },
+        { name: "Photo + Film", description: "Photography plus cinematic highlight film", price: 250000, inclusions: ["Full day photo + video", "600+ photos", "5 min cinematic film", "3 photographers", "Premium album"] },
+      ],
+    },
+
+    // --- CATERERS ---
+    {
+      user: { name: "Jayesh Mehta", email: "jayesh.mehta@example.com" },
+      profile: {
+        businessName: "Shubh Shakahari Caterers",
+        slug: "shubh-shakahari-caterers-mumbai",
+        description: "Pure vegetarian Gujarati and Jain wedding caterers in Ghatkopar, Mumbai. Specialists in elaborate Gujarati thali, Jain-friendly dishes with no onion/garlic options. Serving Mumbai weddings for over 25 years.",
+        shortBio: "Pure veg Gujarati & Jain wedding caterers",
+        country: "IN", state: "Maharashtra", city: "Mumbai",
+        startingPrice: 600, currency: "INR",
+        yearsInBusiness: 25, teamSize: 40,
+        averageRating: 4.6, totalReviews: 278,
+        isVerified: true,
+      },
+      categories: ["caterers"],
+      culturalTags: ["hindu", "jain", "west-indian", "gujarati", "traditional"],
+      listings: [{
+        title: "Gujarati & Jain Wedding Catering",
+        slug: "shubh-gujarati-jain-wedding-catering-mumbai",
+        description: "Elaborate pure vegetarian thalis for wedding functions. Jain options (no onion/garlic), live chaat counters, and traditional Gujarati sweets.",
+        priceType: "STARTING_AT" as const,
+        priceMin: 600, priceMax: 1800,
+        priceUnit: "per plate",
+        isPublished: true, isFeatured: true,
+      }],
+      packages: [
+        { name: "Silver Thali", description: "12-item traditional Gujarati thali", price: 600, inclusions: ["12-item thali", "2 sweets", "Chaas", "Papad", "Service staff"] },
+        { name: "Gold Thali", description: "18-item thali with live counters", price: 1000, inclusions: ["18-item thali", "4 sweets", "Live chaat counter", "Pani puri stall", "Premium drinks", "Decorated food stalls"] },
+        { name: "Platinum", description: "25-item royal spread with Rajwadi setup", price: 1800, inclusions: ["25-item thali", "6 sweets", "3 live counters", "Ice cream bar", "Welcome drinks", "Rajwadi setup", "Premium service staff"] },
+      ],
+    },
+    {
+      user: { name: "Irfan Qureshi", email: "irfan.qureshi@example.com" },
+      profile: {
+        businessName: "Qureshi's Royal Kitchen",
+        slug: "qureshis-royal-kitchen-mumbai",
+        description: "Legendary Mughlai and Lucknowi wedding caterers from Mohammed Ali Road, Mumbai. Famous for biryani, seekh kebabs, and Shahi desserts. Trusted by families for generations.",
+        shortBio: "Legendary Mughlai wedding feasts since 1985",
+        country: "IN", state: "Maharashtra", city: "Mumbai",
+        startingPrice: 700, currency: "INR",
+        yearsInBusiness: 38, teamSize: 50,
+        averageRating: 4.8, totalReviews: 345,
+        isVerified: true,
+      },
+      categories: ["caterers"],
+      culturalTags: ["muslim", "north-indian", "traditional"],
+      listings: [{
+        title: "Royal Mughlai Wedding Feast",
+        slug: "qureshis-royal-mughlai-feast-mumbai",
+        description: "Authentic Mughlai and Lucknowi cuisine for Nikah, Walima, and reception. Famous for our signature biryani and live kebab counters.",
+        priceType: "STARTING_AT" as const,
+        priceMin: 700, priceMax: 2200,
+        priceUnit: "per plate",
+        isPublished: true, isFeatured: false,
+      }],
+      packages: [
+        { name: "Classic Dawat", description: "12-item non-veg menu", price: 700, inclusions: ["Qureshi biryani", "3 curries", "4 kebab varieties", "2 desserts", "Sharbat", "Service staff"] },
+        { name: "Shahi Dawat", description: "20-item royal spread with live counters", price: 1500, inclusions: ["2 biryanis", "5 curries", "8 kebab varieties", "Live tandoor counter", "4 Shahi desserts", "Premium drinks", "Decorated counters"] },
+      ],
+    },
+    {
+      user: { name: "Srinivas Iyer", email: "srinivas.iyer@example.com" },
+      profile: {
+        businessName: "Dakshin Delight Caterers",
+        slug: "dakshin-delight-caterers-mumbai",
+        description: "South Indian and multi-cuisine wedding caterers in Powai, Mumbai. Offering traditional banana leaf meals, North Indian, and continental options. Perfect for diverse guest lists.",
+        shortBio: "South Indian & multi-cuisine wedding caterers",
+        country: "IN", state: "Maharashtra", city: "Mumbai",
+        startingPrice: 550, currency: "INR",
+        yearsInBusiness: 15, teamSize: 35,
+        averageRating: 4.5, totalReviews: 189,
+        isVerified: false,
+      },
+      categories: ["caterers"],
+      culturalTags: ["hindu", "south-indian", "west-indian", "modern"],
+      listings: [{
+        title: "Multi-Cuisine Wedding Catering",
+        slug: "dakshin-multi-cuisine-wedding-mumbai",
+        description: "Authentic South Indian banana leaf meals along with North Indian and continental options. Ideal for weddings with diverse guest backgrounds.",
+        priceType: "RANGE" as const,
+        priceMin: 550, priceMax: 1600,
+        priceUnit: "per plate",
+        isPublished: true, isFeatured: false,
+      }],
+      packages: [
+        { name: "South Indian Special", description: "Traditional banana leaf meal", price: 550, inclusions: ["Banana leaf meal", "Sambar", "Rasam", "4 curries", "Payasam", "Filter coffee"] },
+        { name: "Multi-Cuisine Combo", description: "South + North Indian + Continental", price: 1100, inclusions: ["South Indian counter", "North Indian counter", "Continental starters", "Live dosa station", "4 desserts"] },
+      ],
+    },
+
+    // --- DECORATORS ---
+    {
+      user: { name: "Meera Joshi", email: "meera.joshi@example.com" },
+      profile: {
+        businessName: "Meera's Mandap Creations",
+        slug: "meeras-mandap-creations-mumbai",
+        description: "Traditional Hindu wedding mandap and ceremony decoration specialist in Dadar, Mumbai. Expert in Maharashtrian and Gujarati mandap styles with fresh flower work.",
+        shortBio: "Traditional mandap decoration specialist",
+        country: "IN", state: "Maharashtra", city: "Mumbai",
+        startingPrice: 80000, currency: "INR",
+        yearsInBusiness: 18, teamSize: 20,
+        averageRating: 4.7, totalReviews: 156,
+        isVerified: true,
+      },
+      categories: ["decorators", "florists"],
+      culturalTags: ["hindu", "west-indian", "marathi", "gujarati", "traditional"],
+      listings: [{
+        title: "Traditional Mandap & Ceremony Decor",
+        slug: "meeras-traditional-mandap-decor-mumbai",
+        description: "Handcrafted mandap setups with fresh flowers for Maharashtrian and Gujarati weddings. Includes entrance, aisle, and stage decoration.",
+        priceType: "STARTING_AT" as const,
+        priceMin: 80000, priceMax: 400000,
+        priceUnit: "per event",
+        isPublished: true, isFeatured: true,
+      }],
+      packages: [
+        { name: "Classic Mandap", description: "Traditional mandap + entrance decor", price: 80000, inclusions: ["Wooden mandap", "Fresh flower decoration", "Entrance arch", "Aisle decoration"] },
+        { name: "Grand Mandap", description: "Luxury mandap + full venue decor", price: 250000, inclusions: ["Premium carved mandap", "Exotic flower work", "Full entrance setup", "Stage decoration", "Table centerpieces", "LED lighting", "Car decoration"] },
+      ],
+    },
+    {
+      user: { name: "Rohit Singhania", email: "rohit.singhania@example.com" },
+      profile: {
+        businessName: "Luxe Events Mumbai",
+        slug: "luxe-events-mumbai",
+        description: "Luxury contemporary wedding designer in Juhu, Mumbai. Creating stunning modern, minimalist, and fusion wedding setups. Featured in top wedding magazines.",
+        shortBio: "Luxury contemporary wedding design",
+        country: "IN", state: "Maharashtra", city: "Mumbai",
+        startingPrice: 200000, currency: "INR",
+        yearsInBusiness: 9, teamSize: 12,
+        averageRating: 4.9, totalReviews: 78,
+        isVerified: true,
+        websiteUrl: "https://luxeventsmumbai.example.com",
+      },
+      categories: ["decorators"],
+      culturalTags: ["interfaith", "modern", "fusion", "destination"],
+      listings: [{
+        title: "Luxury Wedding Design & Decor",
+        slug: "luxe-luxury-wedding-design-mumbai",
+        description: "Bespoke wedding design for modern couples. Minimalist elegance, floral installations, and immersive themed setups.",
+        priceType: "STARTING_AT" as const,
+        priceMin: 200000, priceMax: 1500000,
+        priceUnit: "per event",
+        isPublished: true, isFeatured: false,
+      }],
+      packages: [
+        { name: "Chic", description: "Modern minimalist setup", price: 200000, inclusions: ["Contemporary mandap/altar", "Minimal floral installation", "Entrance setup", "Basic lighting"] },
+        { name: "Opulent", description: "Full luxury transformation", price: 800000, inclusions: ["Bespoke design concept", "Floral ceiling installation", "LED walls", "Luxury lounge", "Photo zones", "Complete venue transformation"] },
+      ],
+    },
+
+    // --- VENUES ---
+    {
+      user: { name: "The Taj Mahal Palace Events", email: "taj.events@example.com" },
+      profile: {
+        businessName: "Heritage Banquet Hall",
+        slug: "heritage-banquet-hall-mumbai",
+        description: "Elegant heritage banquet hall in South Mumbai. Grand ballroom with vintage chandeliers, perfect for traditional Hindu, Parsi, and Christian weddings. Capacity up to 800 guests.",
+        shortBio: "Grand heritage venue in South Mumbai",
+        country: "IN", state: "Maharashtra", city: "Mumbai",
+        startingPrice: 300000, currency: "INR",
+        yearsInBusiness: 30, teamSize: 25,
+        averageRating: 4.6, totalReviews: 210,
+        isVerified: true,
+      },
+      categories: ["venues"],
+      culturalTags: ["hindu", "christian", "west-indian", "traditional"],
+      listings: [{
+        title: "Grand Heritage Banquet Hall",
+        slug: "heritage-grand-banquet-hall-mumbai",
+        description: "Stunning South Mumbai venue with vintage architecture, grand ballroom, outdoor lawns, and in-house catering. Perfect for opulent traditional weddings.",
+        priceType: "STARTING_AT" as const,
+        priceMin: 300000, priceMax: 1500000,
+        priceUnit: "per event",
+        isPublished: true, isFeatured: true,
+      }],
+      packages: [
+        { name: "Ballroom", description: "Grand ballroom for 400 guests", price: 300000, inclusions: ["Ballroom rental", "Basic decor", "Valet parking", "400 guests capacity", "Bridal suite"] },
+        { name: "Grand Celebration", description: "Full venue with lawn + ballroom", price: 800000, inclusions: ["Ballroom + lawn", "800 guests capacity", "In-house catering", "Premium decor", "Bridal suite", "DJ setup", "Valet parking"] },
+      ],
+    },
+    {
+      user: { name: "Seaside Celebrations", email: "seaside.celebrations@example.com" },
+      profile: {
+        businessName: "Seaside Celebrations Juhu",
+        slug: "seaside-celebrations-juhu-mumbai",
+        description: "Beachfront wedding venue in Juhu, Mumbai. Open-air celebrations with stunning Arabian Sea views. Perfect for sunset ceremonies and intimate beach weddings.",
+        shortBio: "Beachfront wedding venue with sea views",
+        country: "IN", state: "Maharashtra", city: "Mumbai",
+        startingPrice: 200000, currency: "INR",
+        yearsInBusiness: 12, teamSize: 15,
+        averageRating: 4.5, totalReviews: 98,
+        isVerified: false,
+      },
+      categories: ["venues"],
+      culturalTags: ["interfaith", "modern", "destination", "intimate-micro"],
+      listings: [{
+        title: "Beachfront Wedding Venue",
+        slug: "seaside-beachfront-wedding-venue-mumbai",
+        description: "Beautiful beachside venue with panoramic sea views. Ideal for intimate ceremonies, sangeet nights, and destination-style weddings in Mumbai.",
+        priceType: "STARTING_AT" as const,
+        priceMin: 200000, priceMax: 1000000,
+        priceUnit: "per event",
+        isPublished: true, isFeatured: false,
+      }],
+      packages: [
+        { name: "Intimate Beach", description: "Up to 100 guests, sunset ceremony", price: 200000, inclusions: ["Beach setup", "100 guests", "Basic decor", "Sound system", "2 hours"] },
+        { name: "Grand Beach Wedding", description: "Up to 300 guests, full evening", price: 600000, inclusions: ["Full beach + indoor venue", "300 guests", "Premium decor", "Stage + dance floor", "Full evening", "Parking"] },
+      ],
+    },
+
+    // --- MAKEUP ARTISTS ---
+    {
+      user: { name: "Pooja Sawant", email: "pooja.sawant@example.com" },
+      profile: {
+        businessName: "Pooja Sawant Bridal Studio",
+        slug: "pooja-sawant-bridal-studio-mumbai",
+        description: "Specialist in Maharashtrian bridal looks including traditional Nauvari draping, mundavalya, and bridal jewelry styling. Based in Thane, serving all of Mumbai.",
+        shortBio: "Maharashtrian bridal makeup & Nauvari draping",
+        country: "IN", state: "Maharashtra", city: "Mumbai",
+        startingPrice: 15000, currency: "INR",
+        yearsInBusiness: 11, teamSize: 4,
+        averageRating: 4.8, totalReviews: 165,
+        isVerified: true,
+      },
+      categories: ["makeup-artists"],
+      culturalTags: ["hindu", "west-indian", "marathi", "traditional"],
+      listings: [{
+        title: "Maharashtrian Bridal Makeup & Styling",
+        slug: "pooja-maharashtrian-bridal-makeup-mumbai",
+        description: "Complete Maharashtrian bridal transformation including traditional makeup, Nauvari saree draping, mundavalya, and bridal jewelry styling.",
+        priceType: "STARTING_AT" as const,
+        priceMin: 15000, priceMax: 50000,
+        priceUnit: "per event",
+        isPublished: true, isFeatured: false,
+      }],
+      packages: [
+        { name: "Classic Bridal", description: "Traditional makeup + hairstyling", price: 15000, inclusions: ["HD bridal makeup", "Hairstyling", "Nauvari draping", "1 event"] },
+        { name: "Premium Bridal", description: "Airbrush + trial + 2 events", price: 35000, inclusions: ["Airbrush makeup", "Hairstyling", "Nauvari draping", "Mundavalya setting", "Trial session", "2 events"] },
+      ],
+    },
+    {
+      user: { name: "Zara Hussain", email: "zara.hussain@example.com" },
+      profile: {
+        businessName: "Zara Glam Studio",
+        slug: "zara-glam-studio-mumbai",
+        description: "Celebrity makeup artist in Bandra specializing in glamorous bridal looks for all traditions. Expert in Muslim, Sikh, and South Indian bridal styles.",
+        shortBio: "Celebrity makeup artist for all traditions",
+        country: "IN", state: "Maharashtra", city: "Mumbai",
+        startingPrice: 30000, currency: "INR",
+        yearsInBusiness: 13, teamSize: 6,
+        averageRating: 4.9, totalReviews: 220,
+        isVerified: true,
+        websiteUrl: "https://zaraglamstudio.example.com",
+      },
+      categories: ["makeup-artists"],
+      culturalTags: ["muslim", "sikh", "south-indian", "modern"],
+      listings: [{
+        title: "Celebrity Bridal Makeup",
+        slug: "zara-celebrity-bridal-makeup-mumbai",
+        description: "Red carpet bridal looks for all cultural backgrounds. Specializing in Muslim, Sikh, and South Indian bridal styles with a glamorous modern touch.",
+        priceType: "STARTING_AT" as const,
+        priceMin: 30000, priceMax: 100000,
+        priceUnit: "per event",
+        isPublished: true, isFeatured: true,
+      }],
+      packages: [
+        { name: "Signature Look", description: "HD/airbrush makeup for 1 event", price: 30000, inclusions: ["HD/airbrush makeup", "Hairstyling", "Dupatta/veil setting", "1 event", "Touch-up kit"] },
+        { name: "Star Package", description: "Full wedding coverage + trial", price: 75000, inclusions: ["Airbrush makeup", "Hairstyling", "All events (up to 3)", "Trial session", "Family member makeup (2)", "Touch-up kit"] },
+      ],
+    },
+
+    // --- PRIESTS & OFFICIANTS ---
+    {
+      user: { name: "Pandit Suresh Joshi", email: "pandit.suresh@example.com" },
+      profile: {
+        businessName: "Pandit Suresh Joshi",
+        slug: "pandit-suresh-joshi-mumbai",
+        description: "Experienced Marathi Hindu priest in Dadar, Mumbai. Conducting traditional Maharashtrian, Gujarati, and Vedic wedding ceremonies for over 30 years.",
+        shortBio: "Vedic priest for Maharashtrian weddings",
+        country: "IN", state: "Maharashtra", city: "Mumbai",
+        startingPrice: 11000, currency: "INR",
+        yearsInBusiness: 30, teamSize: 1,
+        averageRating: 4.8, totalReviews: 290,
+        isVerified: true,
+      },
+      categories: ["priests-officiants"],
+      culturalTags: ["hindu", "west-indian", "marathi", "gujarati", "traditional"],
+      listings: [{
+        title: "Maharashtrian Hindu Wedding Ceremony",
+        slug: "pandit-suresh-maharashtrian-wedding-mumbai",
+        description: "Traditional Maharashtrian and Vedic wedding ceremonies. Includes muhurat selection, all rituals from Ganesh Pujan to Saptapadi.",
+        priceType: "FIXED" as const,
+        priceMin: 11000,
+        priceUnit: "per ceremony",
+        isPublished: true, isFeatured: false,
+      }],
+      packages: [
+        { name: "Standard Ceremony", description: "Core wedding rituals, 3 hours", price: 11000, inclusions: ["Muhurat consultation", "All main rituals", "Pooja materials list", "3 hours"] },
+        { name: "Complete Traditional", description: "Full ceremony with all sub-rituals", price: 21000, inclusions: ["Muhurat consultation", "All rituals + sub-rituals", "Ganesh Pujan", "Havan", "Pooja materials included", "5-6 hours"] },
+      ],
+    },
+    {
+      user: { name: "Reverend David D'Souza", email: "rev.david@example.com" },
+      profile: {
+        businessName: "Reverend David D'Souza",
+        slug: "reverend-david-dsouza-mumbai",
+        description: "Interfaith and Christian wedding officiant in South Mumbai. Conducts Catholic, Protestant, and interfaith ceremonies. Fluent in English, Hindi, Konkani, and Marathi.",
+        shortBio: "Christian & interfaith wedding officiant",
+        country: "IN", state: "Maharashtra", city: "Mumbai",
+        startingPrice: 8000, currency: "INR",
+        yearsInBusiness: 20, teamSize: 1,
+        averageRating: 4.7, totalReviews: 87,
+        isVerified: true,
+      },
+      categories: ["priests-officiants"],
+      culturalTags: ["christian", "interfaith", "west-indian", "modern"],
+      listings: [{
+        title: "Christian & Interfaith Wedding Ceremony",
+        slug: "rev-david-christian-interfaith-wedding-mumbai",
+        description: "Beautiful Christian and interfaith wedding ceremonies. Personalized vows, multilingual services. Church or venue ceremonies.",
+        priceType: "FIXED" as const,
+        priceMin: 8000,
+        priceUnit: "per ceremony",
+        isPublished: true, isFeatured: false,
+      }],
+      packages: [
+        { name: "Church Ceremony", description: "Traditional church wedding", price: 8000, inclusions: ["Pre-marital counseling", "Church ceremony", "Personalized homily", "1.5 hours"] },
+        { name: "Venue Ceremony", description: "Ceremony at wedding venue", price: 15000, inclusions: ["Pre-marital counseling", "Venue ceremony", "Personalized vows", "Sound system", "2 hours", "Travel included"] },
+      ],
+    },
+
+    // --- MEHENDI ARTIST ---
+    {
+      user: { name: "Rashida Patel", email: "rashida.patel@example.com" },
+      profile: {
+        businessName: "Rashida's Mehndi Art",
+        slug: "rashidas-mehndi-art-mumbai",
+        description: "Master mehndi artist in Andheri, Mumbai. Specializing in intricate Rajasthani, Arabic, and Indo-Arabic bridal designs. Team available for large wedding parties.",
+        shortBio: "Intricate bridal mehndi designs",
+        country: "IN", state: "Maharashtra", city: "Mumbai",
+        startingPrice: 5000, currency: "INR",
+        yearsInBusiness: 16, teamSize: 8,
+        averageRating: 4.8, totalReviews: 312,
+        isVerified: true,
+      },
+      categories: ["mehendi-artists"],
+      culturalTags: ["hindu", "muslim", "west-indian", "traditional"],
+      listings: [{
+        title: "Bridal Mehndi Design",
+        slug: "rashidas-bridal-mehndi-design-mumbai",
+        description: "Exquisite bridal mehndi designs including Rajasthani, Arabic, and custom fusion patterns. Team of 8 artists for quick guest mehndi.",
+        priceType: "STARTING_AT" as const,
+        priceMin: 5000, priceMax: 25000,
+        priceUnit: "per bride",
+        isPublished: true, isFeatured: false,
+      }],
+      packages: [
+        { name: "Bridal Hands", description: "Full hands + feet bridal mehndi", price: 5000, inclusions: ["Full hands front & back", "Feet design", "1 bride", "Premium mehndi cone"] },
+        { name: "Bridal + Guests", description: "Bridal mehndi + up to 30 guests", price: 20000, inclusions: ["Bridal hands & feet", "30 guest hands", "4 artists", "Premium cones", "4-5 hours"] },
+      ],
+    },
+  ];
+
+  for (const vendor of mumbaiVendors) {
+    const user = await prisma.user.upsert({
+      where: { email: vendor.user.email },
+      update: {},
+      create: {
+        name: vendor.user.name,
+        email: vendor.user.email,
+        passwordHash,
+        role: "VENDOR",
+      },
+    });
+
+    const profile = await prisma.vendorProfile.upsert({
+      where: { userId: user.id },
+      update: {},
+      create: {
+        userId: user.id,
+        ...vendor.profile,
+        startingPrice: vendor.profile.startingPrice,
+      },
+    });
+
+    for (const listingData of vendor.listings) {
+      const listing = await prisma.vendorListing.upsert({
+        where: { slug: listingData.slug },
+        update: {},
+        create: {
+          vendorProfileId: profile.id,
+          ...listingData,
+          currency: "INR",
+        },
+      });
+
+      for (const catSlug of vendor.categories) {
+        const cat = await getCategory(catSlug);
+        if (cat) {
+          await prisma.vendorListingCategory.upsert({
+            where: { listingId_categoryId: { listingId: listing.id, categoryId: cat.id } },
+            update: {},
+            create: { listingId: listing.id, categoryId: cat.id },
+          });
+        }
+      }
+
+      for (const termSlug of vendor.culturalTags) {
+        const term = await getTerm(termSlug);
+        if (term) {
+          await prisma.vendorListingCulturalTag.upsert({
+            where: { listingId_taxonomyTermId: { listingId: listing.id, taxonomyTermId: term.id } },
+            update: {},
+            create: { listingId: listing.id, taxonomyTermId: term.id },
+          });
+        }
+      }
+
+      for (let i = 0; i < vendor.packages.length; i++) {
+        const pkg = vendor.packages[i];
+        await prisma.vendorPackage.create({
+          data: {
+            listingId: listing.id,
+            name: pkg.name,
+            description: pkg.description,
+            price: pkg.price,
+            currency: vendor.profile.currency,
+            inclusions: pkg.inclusions,
+            sortOrder: i,
+          },
+        });
+      }
+    }
+  }
+
+  console.log(`  Seeded ${mumbaiVendors.length} Mumbai vendors`);
+
   // Create a sample customer
   await prisma.user.upsert({
     where: { email: "customer@example.com" },
