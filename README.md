@@ -2,6 +2,14 @@
 
 A global wedding vendor marketplace with culturally-aware categorization by religion, tradition, region, and ceremony style. Connects couples and event planners with wedding vendors — photographers, caterers, decorators, priests, and more.
 
+## Screenshots
+
+### Homepage
+![VivahVendors Homepage](docs/screenshots/homepage.png)
+
+### Vendor Browse
+![VivahVendors Vendor Browse](docs/screenshots/vendors.png)
+
 ## Features
 
 - Browse and search vendors with cultural, category, location, and price filters
