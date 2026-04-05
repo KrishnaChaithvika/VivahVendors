@@ -58,7 +58,7 @@ export default async function HomePage() {
           <div className="container mx-auto px-4 text-center relative z-10">
             <div className="inline-flex items-center gap-2 bg-white/80 border border-rose-200 text-rose-600 text-sm font-medium px-4 py-1.5 rounded-full mb-6 shadow-sm">
               <span>✨</span>
-              <span>India&apos;s #1 Cultural Wedding Marketplace</span>
+              <span>Culturally-Aware Wedding Vendors, Worldwide</span>
               <span>✨</span>
             </div>
 
