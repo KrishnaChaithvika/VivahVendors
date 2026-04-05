@@ -6,7 +6,7 @@
 import { config } from "dotenv";
 config({ path: new URL("../.env", import.meta.url).pathname });
 
-import { PrismaClient } from "../src/generated/prisma/client";
+import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
