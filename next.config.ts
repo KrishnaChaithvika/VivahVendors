@@ -7,9 +7,7 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "**.googleusercontent.com" },
     ],
   },
-  outputFileTracingIncludes: {
-    "/**": ["./src/generated/prisma/**/*"],
-  },
+  serverExternalPackages: ["@prisma/client", ".prisma"],
 };
 
 export default nextConfig;

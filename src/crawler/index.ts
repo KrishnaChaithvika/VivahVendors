@@ -15,7 +15,7 @@
  *   --max=<n>        Max results per category (default: 20)
  */
 
-import { PrismaClient } from "../generated/prisma/client";
+import { PrismaClient } from "@prisma/client";
 import { GooglePlacesAdapter } from "./sources/google-places";
 import { WedMeGoodAdapter } from "./sources/wed-me-good";
 import { GenericWebAdapter } from "./sources/generic-web";
